@@ -74,6 +74,7 @@ module Pipedrive
       # @param [HTTParty::Response] response
       def bad_response(response, params={})
         puts params.inspect
+        puts response
         if response.class == HTTParty::Response
           raise HTTParty::ResponseError, response
         end
@@ -85,7 +86,6 @@ module Pipedrive
       end
 
       def all(response = nil, options={},get_absolutely_all=false)
-        p 'test'
         res = response || get(resource_path, options)
         p res
         if res.ok?
@@ -102,6 +102,7 @@ module Pipedrive
 
       def create( opts = {} )
         res = post resource_path, :body => opts
+        p res
         if res.success?
           res['data'] = opts.merge res['data']
           new(res)
@@ -112,11 +113,13 @@ module Pipedrive
       
       def find(id)
         res = get "#{resource_path}/#{id}"
+        p res
         res.ok? ? new(res) : bad_response(res,id)
       end
 
       def find_by_name(name, opts={})
         res = get "#{resource_path}/find", :query => { :term => name }.merge(opts)
+        p res
         res.ok? ? new_list(res) : bad_response(res,{:name => name}.merge(opts))
       end
 
