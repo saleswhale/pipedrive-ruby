@@ -16,7 +16,7 @@ module Pipedrive
 
     include HTTParty
     
-    base_uri 'api.pipedrive.com/v1'
+    base_uri 'https://api.pipedrive.com/v1'
     headers HEADERS
     format :json
 
@@ -85,7 +85,9 @@ module Pipedrive
       end
 
       def all(response = nil, options={},get_absolutely_all=false)
+        p 'test'
         res = response || get(resource_path, options)
+        p res
         if res.ok?
           data = res['data'].nil? ? [] : res['data'].map{|obj| new(obj)}
           if get_absolutely_all && res['additional_data']['pagination'] && res['additional_data']['pagination'] && res['additional_data']['pagination']['more_items_in_collection']
@@ -94,7 +96,7 @@ module Pipedrive
           end
           data
         else
-          bad_response(res,attrs)
+          bad_response(res)
         end
       end
 
