@@ -1,11 +1,11 @@
 module Pipedrive
   class Organization < Base
 
-    def persons(id)
+    def persons
       Person.all(get "#{resource_path}/#{id}/persons")
     end
 
-    def deals(id)
+    def deals
       Deal.all(get "#{resource_path}/#{id}/deals")
     end
 
